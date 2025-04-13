@@ -2,10 +2,11 @@
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox, font
 import os
-import formatador  # Importa o módulo de formatação
+from formatador import Formatador 
+from texto_utils import check_spelling  
 # endregion
 
-# region Classe NotePad
+# region Classe Principal
 class NotePad:
     def __init__(self, root):
         # region Inicialização
@@ -37,12 +38,23 @@ class NotePad:
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Sair", command=self.root.destroy)
 
-        # Menu Formatar
+       # Menu Formatar
         self.format_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.menu_bar.add_cascade(label="Formatar", menu=self.format_menu)
         self.format_menu.add_command(label="Negrito", command=self.apply_bold)
         self.format_menu.add_command(label="Itálico", command=self.apply_italic)
         self.format_menu.add_command(label="Sublinhado", command=self.apply_underline)
+        self.format_menu.add_separator()
+        self.format_menu.add_command(label="Aumentar Fonte", command=self.increase_font_size)
+        self.format_menu.add_command(label="Diminuir Fonte", command=self.decrease_font_size)
+        self.format_menu.add_command(label="Trocar Cor", command=self.change_text_color)
+        self.format_menu.add_separator()
+        self.format_menu.add_command(label="Resetar Formatação", command=self.reset_formatting)
+        
+        # Menu Ferramentas
+        self.tools_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.menu_bar.add_cascade(label="Ferramentas", menu=self.tools_menu)
+        self.tools_menu.add_command(label="Verificar Ortografia", command=self.check_spelling)
         # endregion
 
         # region Notebook
@@ -61,11 +73,14 @@ class NotePad:
         
         text_area = tk.Text(tab, yscrollcommand=text_scroll.set, wrap="word", undo=True)
         text_area.pack(fill=tk.BOTH, expand=True)
-        text_area.configure(font=self.default_font)
         
         text_scroll.config(command=text_area.yview)
         self.file_paths[tab] = None
         self.notebook.select(tab)
+
+        # Criar um formatador para o widget de texto
+        formatador = Formatador(text_area)
+        tab.formatador = formatador  # Armazena o formatador na aba
 
         # Salvar estado ao modificar o texto
         text_area.bind("<KeyRelease>", lambda event: self.save_state())
@@ -185,16 +200,39 @@ class NotePad:
 
     # Métodos para aplicar formatações
     def apply_bold(self):
-        _, text_area = self.get_current_tab()
-        formatador.toggle_bold(text_area)
+        current_tab = self.notebook.nametowidget(self.notebook.select())
+        current_tab.formatador.toggle_bold()
 
     def apply_italic(self):
-        _, text_area = self.get_current_tab()
-        formatador.toggle_italic(text_area)
+        current_tab = self.notebook.nametowidget(self.notebook.select())
+        current_tab.formatador.toggle_italic()
 
     def apply_underline(self):
-        _, text_area = self.get_current_tab()
-        formatador.toggle_underline(text_area)
+        current_tab = self.notebook.nametowidget(self.notebook.select())
+        current_tab.formatador.toggle_underline()
+
+    def increase_font_size(self):
+        current_tab = self.notebook.nametowidget(self.notebook.select())
+        current_tab.formatador.increase_font_size()
+
+    def decrease_font_size(self):
+        current_tab = self.notebook.nametowidget(self.notebook.select())
+        current_tab.formatador.decrease_font_size()
+
+    def change_text_color(self):
+        current_tab = self.notebook.nametowidget(self.notebook.select())
+        current_tab.formatador.change_text_color()
+
+    def reset_formatting(self):
+        current_tab = self.notebook.nametowidget(self.notebook.select())
+        current_tab.formatador.reset_formatting()
+    
+    # Métodos de utilidades de texto
+    def check_spelling(self):
+        current_tab = self.notebook.nametowidget(self.notebook.select())
+        text_area = current_tab.winfo_children()[1]
+        check_spelling(text_area)
+
     # endregion
 # endregion
 
