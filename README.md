@@ -1,35 +1,56 @@
 # Bloco de Notas com Formatação e Correção Ortográfica
 
-Este é um editor de texto simples desenvolvido em Python usando a biblioteca `tkinter`. Ele suporta funcionalidades como criação de abas, formatação de texto, correção ortográfica e manipulação de arquivos.
+Este é um editor de texto avançado desenvolvido em Python utilizando a biblioteca `tkinter`. Ele oferece funcionalidades como criação de múltiplas abas, formatação de texto rica, correção ortográfica automatizada e manipulação eficiente de arquivos, proporcionando uma experiência de edição completa e intuitiva.
 
 ## Funcionalidades
 
-- **Criação de Abas**: Permite abrir múltiplas abas para edição de texto.
-- **Formatação de Texto**:
-  - Negrito
-  - Itálico
-  - Sublinhado
-  - Aumentar e diminuir tamanho da fonte
-  - Alterar cor do texto
-  - Resetar formatações
+- **Criação de Abas**: 
+  - Permite abrir múltiplas abas para edição de texto.(`Ctrl+N`)
+- **Formatação de Texto**
+  - Negrito (`Ctrl+B`)
+  - Itálico (`Ctrl+I`)
+  - Sublinhado (`Ctrl+U`)
+  - Aumentar e diminuir tamanho da fonte (`Ctrl+Shift++` / `Ctrl+_`)
+  - Alterar cor do texto (`Ctrl+Shift+C`)
+  - Resetar formatações (`Ctrl+R`)
 - **Correção Ortográfica**:
-  - Destaca palavras incorretas no texto com sublinhado e cor vermelha.
+  - Destaca palavras incorretas no texto com sublinhado e cor vermelha.(`Ctrl+Shift+P`)
 - **Manipulação de Arquivos**:
-  - Abrir arquivos de texto existentes.
-  - Salvar arquivos no disco.
-  - Salvar como um novo arquivo.
+  - Abrir arquivos de texto existentes(`Ctrl+O`).
+  - Salvar arquivos no disco.(`Ctrl+Shift+S`)
+  - Salvar como um novo arquivo(`Ctrl+S`).
 - **Desfazer e Refazer**:
   - Suporte para desfazer (`Ctrl+Z`) e refazer (`Ctrl+Y`) alterações.
+- **Pesquisar e Substituir**:
+  - Pesquisar por palavras no texto e substituir elas(`Ctrl+F`)
+- **Salvamento Automático de Alterações**:
+  - Se o arquivo já existir, as alterações serão salvas automaticamente.
+  - Botão para ativar ou desativar o salvamento automático.
+  - Barra de status indicando se o salvamento automático está ativado ou desativado.
+  - Barra de status exibindo mensagens como "Salvando..." ou "Alterações salvas" para informar o status do salvamento.
+
 - **Atalhos de Teclado**:
   - `Ctrl+N`: Nova aba
+  - `Ctrl+Q`: Fechar aba atual
   - `Ctrl+O`: Abrir arquivo
   - `Ctrl+S`: Salvar arquivo
+  - `Ctrl+Shift+S`: Salvar como
   - `Ctrl+Z`: Desfazer
   - `Ctrl+Y`: Refazer
+  - `Ctrl+F`: Pesquisar e substituir
+  - `Ctrl+R`: Resetar formatações
+  - `Ctrl+B`: Aplicar negrito
+  - `Ctrl+I`: Aplicar itálico
+  - `Ctrl+U`: Aplicar sublinhado
+  - `Ctrl+Shift++`: Aumentar tamanho da fonte
+  - `Ctrl+_`: Diminuir tamanho da fonte
+  - `Ctrl+Shift+C`: Alterar cor do texto
+  - `Ctrl+Shift+P`: Verificar ortografia
 
 ## Tecnologias Utilizadas
 
 - **Python**: Linguagem de programação principal.
+- **Anaconda**: Plataforma para gerenciar ambientes Python e instalar pacotes de forma simplificada.
 - **Tkinter**: Biblioteca para criação da interface gráfica.
 - **SpellChecker**: Biblioteca para verificação ortográfica.
 
