@@ -1,6 +1,6 @@
 # Bloco de Notas com Formatação e Correção Ortográfica
 
-Este é um editor de texto avançado desenvolvido em Python utilizando a biblioteca `tkinter`. Ele oferece funcionalidades como criação de múltiplas abas, formatação de texto rica, correção ortográfica automatizada e manipulação eficiente de arquivos, proporcionando uma experiência de edição completa e intuitiva.
+Este é um editor de texto avançado desenvolvido em Python utilizando a biblioteca `PySide6`. Ele oferece funcionalidades como criação de múltiplas abas, formatação de texto rica, correção ortográfica automatizada e manipulação eficiente de arquivos, proporcionando uma experiência de edição completa e intuitiva.
 
 ## Funcionalidades
 
@@ -50,13 +50,11 @@ Este é um editor de texto avançado desenvolvido em Python utilizando a bibliot
 ## Tecnologias Utilizadas
 
 - **Python**: Linguagem de programação principal.
-- **Anaconda**: Plataforma para gerenciar ambientes Python e instalar pacotes de forma simplificada.
-- **Tkinter**: Biblioteca para criação da interface gráfica.
+- **PySide6**: Biblioteca para criação da interface gráfica.
 - **SpellChecker**: Biblioteca para verificação ortográfica.
 
 ## Estrutura do Projeto
-Bloco-de-notas/ │ ├── paginaInicial.py # Arquivo principal do editor de texto ├── formatador.py # Classe para formatação de texto ├── texto_utils.py # Funções utilitárias, como correção ortográfica ├── README.md # Documentação do projeto └── requirements.txt # Dependências do projeto
-
+Bloco-de-notas/ │ ├── App/ │ ├── paginaInicial.py # Arquivo principal do editor de texto │ ├── formatador.py # Classe para formatação de texto │ ├── texto_utils.py # Funções utilitárias, como correção ortográfica ├── README.md # Documentação do projeto └── requirements.txt # Dependências do projeto
 
 ## Como Executar
 
@@ -64,27 +62,32 @@ Bloco-de-notas/ │ ├── paginaInicial.py # Arquivo principal do editor de 
 2. Instale as dependências necessárias:
    ```bash
    pip install -r requirements.txt
-3. Execute o arquivo Principal
-    python paginaInicial.py
+   ```
+3. Execute o arquivo Principal:
+   ```bash
+   python App/paginaInicial.py
+   ```
 
-# Dependências
+## Dependências
 
 As dependências do projeto estão listadas no arquivo requirements.txt. Certifique-se de instalar as seguintes bibliotecas:
 
-tkinter (incluso no Python)
-pyspellchecker
+- PySide6
+- pyspellchecker
 
-# Capturas de Tela
-Editor de Texto com Abas
-<img alt="Editor com Abas" src="ainda vou colocar">
-Formatação de Texto
-<img alt="Formatação de Texto" src="ainda vou colocar">
-Correção Ortográfica
-<img alt="Correção Ortográfica" src="ainda vou colocar">
+## Capturas de Tela
 
+### Editor de Texto com Abas
+![Editor com Abas](ainda_vou_colocar)
 
-# Contribuições
+### Formatação de Texto
+![Formatação de Texto](ainda_vou_colocar)
+
+### Correção Ortográfica
+![Correção Ortográfica](ainda_vou_colocar)
+
+## Contribuições
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests. Para mais detalhes sobre como contribuir, consulte o arquivo [CONTRIBUTING.md](CONTRIBUTING.md).
 
-# Licença
+## Licença
 Este projeto é licenciado sob a licença MIT. Consulte o arquivo LICENSE para mais detalhes.
