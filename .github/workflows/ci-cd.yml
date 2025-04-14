@@ -48,8 +48,8 @@ jobs:
     
     - name: Copiar executáveis para o site
       run: |
-        mkdir -p page/downloads
-        cp dist/BlocoDeNotas.exe page/downloads/
+        mkdir -p pages/downloads
+        cp dist/BlocoDeNotas.exe pages/downloads/
 
   build-linux:
     runs-on: ubuntu-latest
@@ -91,6 +91,6 @@ jobs:
     
     - name: Copiar executáveis para o site
       run: |
-        mkdir -p page/downloads
-        cp dist/BlocoDeNotas page/downloads/
+        mkdir -p pages/downloads
+        cp dist/BlocoDeNotas pages/downloads/
        
