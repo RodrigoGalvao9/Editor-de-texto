@@ -46,11 +46,7 @@ jobs:
         name: BlocoDeNotas-executable-windows
         path: dist/BlocoDeNotas.exe
     
-    - name: Copiar executáveis para o site
-      run: |
-        mkdir -p pages/downloads
-        cp dist/BlocoDeNotas.exe pages/downloads/
-
+    
   build-linux:
     runs-on: ubuntu-latest
 
@@ -89,8 +85,38 @@ jobs:
          name: BlocoDeNotas-executable-linux
          path: dist/BlocoDeNotas
     
-    - name: Copiar executáveis para o site
-      run: |
-        mkdir -p pages/downloads
-        cp dist/BlocoDeNotas pages/downloads/
-       
+  release:
+    needs: [build-windows, build-linux]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.2.2
+
+    - name: Download Windows Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: BlocoDeNotas-executable-windows
+        path: artifacts/
+
+    - name: Download Linux Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: BlocoDeNotas-executable-linux
+        path: artifacts/
+
+    - name: Display downloaded files
+      run: ls -R artifacts/
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: v${{ github.run_number }}
+        name: Release v${{ github.run_number }}
+        files: |
+          artifacts/BlocoDeNotas.exe
+          artifacts/BlocoDeNotas
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
