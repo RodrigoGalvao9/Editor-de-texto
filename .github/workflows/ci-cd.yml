@@ -42,7 +42,8 @@ jobs:
     - name: Build executable
       run: |
         pip install pyinstaller
-        pyinstaller --onefile --name "BlocoDeNotas" --add-data "venv/Lib/site-packages/spellchecker/resources/pt.json.gz:spellchecker/resources" main.py
+        python -c "import spellchecker; import os; print(f'{os.path.dirname(spellchecker.__file__)}/resources/pt.json.gz:spellchecker/resources')" > resource_paths.txt
+        pyinstaller --onefile --noconsole --name "BlocoDeNotas" --add-data "$(cat resource_paths.txt)" main.py
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.6.2
