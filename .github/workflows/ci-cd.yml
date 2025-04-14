@@ -14,7 +14,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout
@@ -25,10 +25,38 @@ jobs:
       with:
         python-version: '3.11'
 
-    - name: Install system dependencies
+    - name: Install dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install -y libegl1 libxkbcommon-x11-0
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run tests
+      run: |
+        pytest tests -v --showlocals --disable-warnings --tb=short
+
+    - name: Build executable
+      run: |
+        pip install pyinstaller
+        python -c "import spellchecker; import os; print(f'{os.path.dirname(spellchecker.__file__)}/resources/pt.json.gz:spellchecker/resources')" > resource_paths.txt
+        pyinstaller --onefile --noconsole --name "BlocoDeNotas.exe" --add-data "$(cat resource_paths.txt)" main.py
+
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.6.2
+      with:
+        name: BlocoDeNotas-executable
+        path: dist/BlocoDeNotas.exe
+
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.2.2
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
 
     - name: Install dependencies
       run: |
@@ -48,5 +76,5 @@ jobs:
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.6.2
       with:
-        name: BlocoDeNotas-executable
-        path: dist/BlocoDeNotas.exe
+        name: BlocoDeNotas-executable-linux
+        path: dist/BlocoDeNotas
