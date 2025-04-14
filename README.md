@@ -57,7 +57,7 @@ Este é um editor de texto avançado desenvolvido em Python utilizando a bibliot
 
 ## Como Executar
 
-1. Certifique-se de ter o Python instalado (versão 3.8 ou superior).
+1. Certifique-se de ter o Python instalado (versão 3.10 ou superior).
 2. Instale as dependências necessárias:
    ```bash
    pip install -r requirements.txt
@@ -66,7 +66,6 @@ Este é um editor de texto avançado desenvolvido em Python utilizando a bibliot
   ```bash
   python main.py
   ```
-
 4. (Opcional) Crie um executável para facilitar a execução:
   ```bash
   pyinstaller --onefile main.py
