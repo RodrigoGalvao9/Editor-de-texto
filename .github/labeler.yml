@@ -18,10 +18,9 @@ documentation:
 
 # Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
 source:
-- all:
   - changed-files:
-    - 'src/**/*'
-    - '!src/docs/*'
+      - 'src/**/*'
+      - '!src/docs/*'
 
 # Add 'feature' label to any PR where the head branch name starts with `feature` or has a `feature` section in the name
 feature:
