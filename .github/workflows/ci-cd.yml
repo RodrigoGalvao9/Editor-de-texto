@@ -13,7 +13,7 @@ env:
   QT_LOGGING_RULES: "qt.*.debug=true"
 
 jobs:
-  build:
+  build-windows:
     runs-on: windows-latest
 
     steps:
@@ -40,11 +40,13 @@ jobs:
         python -c "import spellchecker; import os; print(f'{os.path.dirname(spellchecker.__file__)}/resources/pt.json.gz:spellchecker/resources')" > resource_paths.txt
         pyinstaller --onefile --noconsole --name "BlocoDeNotas.exe" --add-data "$(cat resource_paths.txt)" main.py
 
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v4.6.2
+    - name: Release
+      uses: softprops/action-gh-release@v2
+      if: github.ref_type == 'tag'
       with:
-        name: BlocoDeNotas-executable
-        path: dist/BlocoDeNotas.exe
+        files: dist/BlocoDeNotas.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build-linux:
     runs-on: ubuntu-latest
@@ -78,8 +80,10 @@ jobs:
         python -c "import spellchecker; import os; print(f'{os.path.dirname(spellchecker.__file__)}/resources/pt.json.gz:spellchecker/resources')" > resource_paths.txt
         pyinstaller --onefile --noconsole --name "BlocoDeNotas" --add-data "$(cat resource_paths.txt)" main.py
 
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v4.6.2
+    - name: Release
+      uses: softprops/action-gh-release@v2
+      if: github.ref_type == 'tag'
       with:
-        name: BlocoDeNotas-executable-linux
-        path: dist/BlocoDeNotas
+        files: dist/BlocoDeNotas
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
