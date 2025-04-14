@@ -13,7 +13,7 @@ class NotePad(QMainWindow):
         self.setGeometry(100, 100, 800, 600)
 
         self.file_paths = {}  
-        self.default_font = QFont("Arial", 12)  # Fonte padrão
+        self.default_font = QFont("Arial", 12) 
         self.auto_save_enabled = True
 
         self.init_ui()

@@ -93,7 +93,7 @@ As dependências do projeto estão listadas no arquivo requirements.txt. Certifi
 ![Correção Ortográfica](ainda_vou_colocar)
 
 ## Contribuições
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests. Para mais detalhes sobre como contribuir, consulte o arquivo [CONTRIBUTING.md](CONTRIBUTING.md).
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests. Para mais detalhes sobre como contribuir, consulte o arquivo [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## Licença
 Este projeto é licenciado sob a licença MIT. Consulte o arquivo LICENSE para mais detalhes.

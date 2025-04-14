@@ -75,7 +75,6 @@ class Formatador:
         cursor = self.text_edit.textCursor()
         cursor.beginEditBlock()
 
-        # Seleciona o documento inteiro
         cursor.select(QTextCursor.Document)
 
         # Reseta a formatação de caracteres (cor, negrito, etc)
@@ -88,5 +87,4 @@ class Formatador:
 
         cursor.endEditBlock()
 
-        # Atualiza o QTextEdit com o cursor modificado
         self.text_edit.setTextCursor(cursor)

@@ -70,8 +70,6 @@ O corpo DEVE começar depois de uma linha em branco após a descrição.
 
 Um rodapé PODE ser fornecido depois de uma linha em branco após o corpo. 
 
-Caso exista um ticket no jira, criar um referência assim: `issue TP-666` ou `closes issue TP-666`
-
 ## Reverter um commit
 Se o commit reverte um commit anterior, ele deve começar por `revert:`, seguido pelo cabeçalho do commit revertido. 
 
@@ -98,7 +96,7 @@ No corpo, ele deve dizer: `Isso reverte o commit <hash> .`, onde o hash é o SHA
 - Use um framework de testes consistente (por exemplo, Jest, Pytest, etc.).
 - Execute os testes localmente usando o comando:
     ```bash
-    npm test
+    pytest -v
     ```
     ou o equivalente para o projeto.
 

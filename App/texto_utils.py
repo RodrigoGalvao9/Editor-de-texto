@@ -37,7 +37,7 @@ class FerramentasTexto:
         """Pesquisa e, opcionalmente, substitui texto no QTextEdit."""
         document = self.text_edit.document()
         cursor = self.text_edit.textCursor()
-        cursor.movePosition(QTextCursor.Start)  # Começa do início sempre
+        cursor.movePosition(QTextCursor.Start) 
 
         flags = QTextDocument.FindCaseSensitively | QTextDocument.FindWholeWords
 
