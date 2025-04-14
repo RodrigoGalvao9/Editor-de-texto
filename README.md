@@ -1,6 +1,6 @@
 # Bloco de Notas com Formatação e Correção Ortográfica
 
-Este é um editor de texto avançado desenvolvido em Python utilizando a biblioteca `PySide6`. Ele oferece funcionalidades como criação de múltiplas abas, formatação de texto rica, correção ortográfica automatizada e manipulação eficiente de arquivos, proporcionando uma experiência de edição completa e intuitiva.
+Este é um editor de texto avançado desenvolvido em Python utilizando a biblioteca `PySide6`. Ele oferece funcionalidades como criação de múltiplas abas, formatação de texto, correção ortográfica automatizada e manipulação eficiente de arquivos, proporcionando uma experiência de edição completa e intuitiva.
 
 ## Funcionalidades
 
@@ -52,9 +52,8 @@ Este é um editor de texto avançado desenvolvido em Python utilizando a bibliot
 - **Python**: Linguagem de programação principal.
 - **PySide6**: Biblioteca para criação da interface gráfica.
 - **SpellChecker**: Biblioteca para verificação ortográfica.
+- **PyTest**: Ferramenta para testes automatizados
 
-## Estrutura do Projeto
-Bloco-de-notas/ │ ├── App/ │ ├── paginaInicial.py # Arquivo principal do editor de texto │ ├── formatador.py # Classe para formatação de texto │ ├── texto_utils.py # Funções utilitárias, como correção ortográfica ├── README.md # Documentação do projeto └── requirements.txt # Dependências do projeto
 
 ## Como Executar
 
@@ -64,9 +63,16 @@ Bloco-de-notas/ │ ├── App/ │ ├── paginaInicial.py # Arquivo prin
    pip install -r requirements.txt
    ```
 3. Execute o arquivo Principal:
-   ```bash
-   python App/paginaInicial.py
-   ```
+  ```bash
+  python main.py
+  ```
+
+4. (Opcional) Crie um executável para facilitar a execução:
+  ```bash
+  pyinstaller --onefile main.py
+  ```
+  O executável será gerado na pasta `dist`.
+
 
 ## Dependências
 
