@@ -1,8 +1,7 @@
 from PySide6.QtGui import QTextCursor, QTextDocument, QTextCharFormat
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QColorDialog, QDialog, QVBoxLayout, QLabel, QLineEdit, QHBoxLayout, QPushButton
+from PySide6.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QHBoxLayout, QPushButton
 from spellchecker import SpellChecker
-import threading
 
 class FerramentasTexto:
     def __init__(self, text_edit):
@@ -10,7 +9,8 @@ class FerramentasTexto:
         self.spell_checker = SpellChecker(language='pt')
 
     def check_spelling(self):
-        """Verifica a ortografia do texto no QTextEdit."""
+        """Verifica a ortografia do texto no QTextEdit e sublinha palavras incorretas."""
+        document = self.text_edit.document()
         cursor = self.text_edit.textCursor()
         cursor.select(QTextCursor.Document)
         text = cursor.selectedText()
@@ -18,20 +18,25 @@ class FerramentasTexto:
         words = text.split()
         misspelled = self.spell_checker.unknown(words)
 
-        # Remove formatação anterior
+        # Limpa formatação anterior
         cursor.beginEditBlock()
-        cursor.setCharFormat(self.text_edit.currentCharFormat())
+        cursor.setCharFormat(QTextCharFormat())
         cursor.endEditBlock()
 
         for word in misspelled:
-            cursor = self.text_edit.textCursor()
-            cursor.movePosition(QTextCursor.Start)
+            # Cria um novo cursor para busca
+            highlight_cursor = QTextCursor(document)
+            flags = QTextDocument.FindCaseSensitively | QTextDocument.FindWholeWords
 
-            while cursor.find(word):
-                format = cursor.charFormat()
-                format.setUnderlineStyle(QTextCursor.SingleUnderline)
-                format.setForeground(Qt.red)
-                cursor.setCharFormat(format)
+            while True:
+                highlight_cursor = document.find(word, highlight_cursor, flags)
+                if highlight_cursor.isNull():
+                    break
+
+                format = QTextCharFormat()
+                format.setUnderlineStyle(QTextCharFormat.SingleUnderline)
+                format.setUnderlineColor(Qt.red)
+                highlight_cursor.mergeCharFormat(format)
 
     def search_text(self, query, replace_with=None):
         """Pesquisa e, opcionalmente, substitui texto no QTextEdit."""
@@ -57,15 +62,6 @@ class FerramentasTexto:
                 found_cursor.mergeCharFormat(highlight_format)
 
             cursor = found_cursor
-
-    def change_text_color(self):
-        """Abre um diálogo para alterar a cor do texto selecionado."""
-        color = QColorDialog.getColor()
-        if color.isValid():
-            cursor = self.text_edit.textCursor()
-            format = cursor.charFormat()
-            format.setForeground(color)
-            cursor.setCharFormat(format)
 
     def search_and_replace(self):
         """Caixa de diálogo para pesquisar e substituir texto."""

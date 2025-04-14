@@ -1,6 +1,6 @@
-from PySide6.QtWidgets import (QApplication, QMainWindow, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton, QLabel, QTabWidget, QFileDialog, QMessageBox, QMenuBar, QColorDialog, QDialog, QLineEdit)
-from PySide6.QtGui import QFont, QTextCursor, QKeySequence, QAction  
-from PySide6.QtCore import QTimer, Qt
+from PySide6.QtWidgets import ( QMainWindow, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton, QLabel, QTabWidget, QFileDialog, QMessageBox, QMenuBar)
+from PySide6.QtGui import QFont, QKeySequence, QAction  
+from PySide6.QtCore import QTimer
 from App.formatador import Formatador
 from App.texto_utils import FerramentasTexto
 import os
@@ -75,6 +75,11 @@ class NotePad(QMainWindow):
         save_as_action.setShortcut(QKeySequence("Ctrl+Shift+S"))
         save_as_action.triggered.connect(self.save_as)
         file_menu.addAction(save_as_action)
+        
+        save_as_action = QAction("Fechar Aba", self)
+        save_as_action.setShortcut(QKeySequence("Ctrl+Q"))
+        save_as_action.triggered.connect(self.close_tab)
+        file_menu.addAction(save_as_action)
 
         # Menu Editar
         edit_menu = menu_bar.addMenu("Editar")
@@ -140,6 +145,7 @@ class NotePad(QMainWindow):
         search_action.triggered.connect(self.search_and_replace)
         tools_menu.addAction(search_action)
 
+    # métodos de manipulação de abas
     def new_tab(self):
         text_edit = QTextEdit()
         text_edit.setFont(self.default_font)
@@ -163,6 +169,23 @@ class NotePad(QMainWindow):
             except Exception as e:
                 QMessageBox.critical(self, "Erro", f"Não foi possível abrir o arquivo: {e}")
 
+    def close_tab(self):
+        current_index = self.tab_widget.currentIndex()
+        if current_index != -1:
+            current_tab = self.tab_widget.widget(current_index)
+            file_path = self.file_paths.get(current_tab)
+
+            if file_path:
+                reply = QMessageBox.question(self, "Fechar Aba", "Deseja salvar as alterações antes de fechar?", QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+
+                if reply == QMessageBox.Yes:
+                    self.save_file()
+                elif reply == QMessageBox.Cancel:
+                    return
+
+            self.tab_widget.removeTab(current_index)
+            del self.file_paths[current_tab]
+
     def save_file(self):
         current_tab = self.get_current_tab()
         file_path = self.file_paths.get(current_tab)
@@ -185,6 +208,7 @@ class NotePad(QMainWindow):
             self.tab_widget.setTabText(self.tab_widget.currentIndex(), os.path.basename(file_path))
             self.save_file()
 
+    # métodos de formatação e ferramentas
     def toggle_auto_save(self):
         self.auto_save_enabled = not self.auto_save_enabled
         if self.auto_save_enabled:
@@ -257,6 +281,7 @@ class NotePad(QMainWindow):
         formatador = Formatador(current_tab)
         formatador.reset_formatting()
 
+    # Métodos de utilidade de texto
     def check_spelling(self):
         current_tab = self.get_current_tab()
         ferramentas = FerramentasTexto(current_tab)
