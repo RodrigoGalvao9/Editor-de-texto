@@ -40,13 +40,11 @@ jobs:
         python -c "import spellchecker; import os; print(f'{os.path.dirname(spellchecker.__file__)}/resources/pt.json.gz:spellchecker/resources')" > resource_paths.txt
         pyinstaller --onefile --noconsole --name "BlocoDeNotas.exe" --add-data "$(cat resource_paths.txt)" main.py
 
-    - name: Release
-      uses: softprops/action-gh-release@v2
-      if: github.ref_type == 'tag'
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.6.2
       with:
-        files: dist/BlocoDeNotas.exe
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: BlocoDeNotas-executable-windows
+        path: dist/BlocoDeNotas.exe
 
   build-linux:
     runs-on: ubuntu-latest
@@ -80,10 +78,8 @@ jobs:
         python -c "import spellchecker; import os; print(f'{os.path.dirname(spellchecker.__file__)}/resources/pt.json.gz:spellchecker/resources')" > resource_paths.txt
         pyinstaller --onefile --noconsole --name "BlocoDeNotas" --add-data "$(cat resource_paths.txt)" main.py
 
-    - name: Release
-      uses: softprops/action-gh-release@v2
-      if: github.ref_type == 'tag'
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.6.2
       with:
-        files: dist/BlocoDeNotas
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         name: BlocoDeNotas-executable-linux
+         path: dist/BlocoDeNotas

@@ -1,0 +1,73 @@
+name: Release Workflow
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  release-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.2.2
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libegl1 libgl1-mesa-dev libxkbcommon-x11-0 libxcb-xinerama0
+      
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Build executable for Linux
+      run: |
+        pip install pyinstaller
+        python -c "import spellchecker; import os; print(f'{os.path.dirname(spellchecker.__file__)}/resources/pt.json.gz:spellchecker/resources')" > resource_paths.txt
+        pyinstaller --onefile --noconsole --name "BlocoDeNotas" --add-data "$(cat resource_paths.txt)" main.py
+
+    - name: Release for Linux
+      uses: softprops/action-gh-release@v2
+      with:
+        files: dist/BlocoDeNotas
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.2.2
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Build executable for Windows
+      run: |
+        pip install pyinstaller
+        python -c "import spellchecker; import os; print(f'{os.path.dirname(spellchecker.__file__)}/resources/pt.json.gz;spellchecker/resources')" > resource_paths.txt
+        pyinstaller --onefile --noconsole --name "BlocoDeNotas.exe" --add-data "@resource_paths.txt" main.py
+
+    - name: Release for Windows
+      uses: softprops/action-gh-release@v2
+      with:
+        files: dist/BlocoDeNotas.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
