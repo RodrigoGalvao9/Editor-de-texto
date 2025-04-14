@@ -35,8 +35,8 @@ jobs:
         pip install pyinstaller
         pyinstaller --onefile --name "BlocoDeNotas" --add-data "venv/Lib/site-packages/spellchecker/resources/pt.json.gz:spellchecker/resources" main.py
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.6.2
       with:
         name: BlocoDeNotas-executable
         path: dist/BlocoDeNotas.exe
