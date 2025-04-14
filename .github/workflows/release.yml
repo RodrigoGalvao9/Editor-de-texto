@@ -63,7 +63,8 @@ jobs:
       run: |
         pip install pyinstaller
         python -c "import spellchecker; import os; print(f'{os.path.dirname(spellchecker.__file__)}/resources/pt.json.gz;spellchecker/resources')" > resource_paths.txt
-        pyinstaller --onefile --noconsole --name "BlocoDeNotas.exe" --add-data "@resource_paths.txt" main.py
+        RESOURCE_PATH=$(cat resource_paths.txt)
+        pyinstaller --onefile --noconsole --name "BlocoDeNotas.exe" --add-data "$RESOURCE_PATH" main.py
 
     - name: Release for Windows
       uses: softprops/action-gh-release@v2
