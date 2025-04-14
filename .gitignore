@@ -3,6 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+
 # C extensions
 *.so
 
@@ -32,6 +37,11 @@ MANIFEST
 *.manifest
 *.spec
 
+# PyInstaller build artifacts
+/build/
+/dist/
+*.spec
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
@@ -50,6 +60,11 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+
+# Test artifacts
+.pytest_cache/
+.coverage
+*.log
 
 # Translations
 *.mo
@@ -139,6 +154,9 @@ venv.bak/
 .condarc
 .conda_environments.txt
 
+# Virtual environment
+/venv/
+
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -175,3 +193,10 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# OS temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+Thumbs.db

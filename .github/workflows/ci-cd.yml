@@ -1,0 +1,42 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run tests
+      run: |
+        pytest tests
+
+    - name: Build executable
+      run: |
+        pip install pyinstaller
+        pyinstaller --onefile --name "BlocoDeNotas" --add-data "venv/Lib/site-packages/spellchecker/resources/pt.json.gz:spellchecker/resources" main.py
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: BlocoDeNotas-executable
+        path: dist/BlocoDeNotas.exe
