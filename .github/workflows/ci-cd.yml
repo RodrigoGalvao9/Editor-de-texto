@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+env:
+  QT_QPA_PLATFORM: offscreen
+  QT_LOGGING_RULES: "qt.*.debug=true"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,7 +37,7 @@ jobs:
 
     - name: Run tests
       run: |
-        pytest tests
+        pytest tests -v --showlocals --html=report.html --self-contained-html
 
     - name: Build executable
       run: |
