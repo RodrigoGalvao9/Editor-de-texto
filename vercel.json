@@ -1,0 +1,10 @@
+{
+    "redirects": [
+      {
+        "source": "/",
+        "destination": "/docs/Fluxograma.html",
+        "permanent": true
+      }
+    ]
+}
+  

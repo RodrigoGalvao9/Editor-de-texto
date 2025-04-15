@@ -51,7 +51,7 @@ Este é um editor de texto avançado desenvolvido em Python utilizando a bibliot
 
 Você pode visualizar o fluxo do programa no mapa mental abaixo:
 
-👉 [Clique aqui para Visualizar o fluxograma](docs/Fluxograma.html)
+👉 [Clique aqui para Visualizar o fluxograma](https://editor-de-texto-xi.vercel.app/)
 
 ## Tecnologias Utilizadas
 
