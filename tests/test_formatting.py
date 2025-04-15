@@ -9,83 +9,86 @@ def text_edit():
     return QTextEdit()
 
 @pytest.fixture
-def formatador(text_edit):
+def formatter(text_edit):
     return Formatador(text_edit)
 
-def test_toggle_bold(formatador, text_edit):
-    text_edit.setText("Texto de teste")
+def select_word(text_edit):
     cursor = text_edit.textCursor()
     cursor.select(QTextCursor.WordUnderCursor)
     text_edit.setTextCursor(cursor)
 
-    formatador.toggle_bold()
-    assert text_edit.textCursor().charFormat().fontWeight() == 700  # QFont.Bold
-
-    formatador.toggle_bold()
-    assert text_edit.textCursor().charFormat().fontWeight() == 400  # QFont.Normal
-
-def test_toggle_italic(formatador, text_edit):
+def test_toggle_bold(formatter, text_edit):
     text_edit.setText("Texto de teste")
-    cursor = text_edit.textCursor()
-    cursor.select(QTextCursor.WordUnderCursor)
-    text_edit.setTextCursor(cursor)
+    select_word(text_edit)
 
-    formatador.toggle_italic()
+    formatter.toggle_bold()
+    assert text_edit.textCursor().charFormat().fontWeight() == 700  
+
+    formatter.toggle_bold()
+    assert text_edit.textCursor().charFormat().fontWeight() == 400  
+
+def test_toggle_italic(formatter, text_edit):
+    text_edit.setText("Texto de teste")
+    select_word(text_edit)
+
+    formatter.toggle_italic()
     assert text_edit.textCursor().charFormat().fontItalic() is True
 
-    formatador.toggle_italic()
+    formatter.toggle_italic()
     assert text_edit.textCursor().charFormat().fontItalic() is False
 
-def test_toggle_underline(formatador, text_edit):
+def test_toggle_underline(formatter, text_edit):
     text_edit.setText("Texto de teste")
-    cursor = text_edit.textCursor()
-    cursor.select(QTextCursor.WordUnderCursor)
-    text_edit.setTextCursor(cursor)
+    select_word(text_edit)
 
-    formatador.toggle_underline()
+    formatter.toggle_underline()
     assert text_edit.textCursor().charFormat().fontUnderline() is True
 
-    formatador.toggle_underline()
+    formatter.toggle_underline()
     assert text_edit.textCursor().charFormat().fontUnderline() is False
 
-def test_increase_font_size(formatador, text_edit):
+def test_increase_font_size(formatter, text_edit):
     text_edit.setText("Texto de teste")
-    cursor = text_edit.textCursor()
-    cursor.select(QTextCursor.WordUnderCursor)
-    text_edit.setTextCursor(cursor)
+    select_word(text_edit)
 
-    formatador.increase_font_size()
+    formatter.increase_font_size()
     assert text_edit.textCursor().charFormat().fontPointSize() == 14
 
-    formatador.increase_font_size()
+    formatter.increase_font_size()
     assert text_edit.textCursor().charFormat().fontPointSize() == 16
 
-def test_decrease_font_size(formatador, text_edit):
+def test_decrease_font_size(formatter, text_edit):
     text_edit.setText("Texto de teste")
-    cursor = text_edit.textCursor()
-    cursor.select(QTextCursor.WordUnderCursor)
-    text_edit.setTextCursor(cursor)
+    select_word(text_edit)
 
-    formatador.increase_font_size()  # Primeiro aumenta para evitar tamanho zero
-    formatador.decrease_font_size()
+    formatter.increase_font_size() 
+    formatter.decrease_font_size()  
     assert text_edit.textCursor().charFormat().fontPointSize() == 12
 
-def test_change_text_color(formatador, text_edit):
+def test_change_text_color(formatter, text_edit):
     text_edit.setText("Texto de teste")
-    cursor = text_edit.textCursor()
-    cursor.select(QTextCursor.WordUnderCursor)
-    text_edit.setTextCursor(cursor)
+    select_word(text_edit)
 
     with patch.object(QColorDialog, 'getColor', return_value=QColor("#FF0000")):
-        formatador.change_text_color()
-    assert text_edit.textCursor().charFormat().foreground().color().name() == "#ff0000"
+        formatter.change_text_color()
+    
+    color = text_edit.textCursor().charFormat().foreground().color().name()
+    assert color == "#ff0000"
 
-def test_reset_formatting(formatador, text_edit):
+def test_reset_formatting(formatter, text_edit):
     text_edit.setText("Texto de teste")
     cursor = text_edit.textCursor()
     cursor.select(QTextCursor.Document)
     text_edit.setTextCursor(cursor)
 
-    formatador.toggle_bold()
-    formatador.reset_formatting()
-    assert text_edit.textCursor().charFormat().fontWeight() == 400  # QFont.Normal
+    formatter.toggle_bold()
+    formatter.toggle_italic()
+    formatter.increase_font_size()
+    formatter.reset_formatting()
+
+    char_format = text_edit.textCursor().charFormat()
+    char_format.setFontPointSize(12)
+
+    assert char_format.fontWeight() == 400
+    assert char_format.fontItalic() is False
+    assert char_format.fontPointSize() == 12

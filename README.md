@@ -47,6 +47,12 @@ Este é um editor de texto avançado desenvolvido em Python utilizando a bibliot
   - `Ctrl+Shift+C`: Alterar cor do texto
   - `Ctrl+Shift+P`: Verificar ortografia
 
+# Fluxograma de funcionalidades do projeto
+
+Você pode visualizar o fluxo do programa no mapa mental abaixo:
+
+👉 [Clique aqui para Visualizar o fluxograma](docs/Fluxograma.html)
+
 ## Tecnologias Utilizadas
 
 - **Python**: Linguagem de programação principal.
@@ -59,9 +65,9 @@ Este é um editor de texto avançado desenvolvido em Python utilizando a bibliot
 
 1. Certifique-se de ter o Python instalado (versão 3.10 ou superior).
 2. Instale as dependências necessárias:
-   ```bash
-   pip install -r requirements.txt
-   ```
+  ```bash
+  pip install -r requirements.txt
+  ```
 3. Execute o arquivo Principal:
   ```bash
   python main.py
@@ -80,6 +86,7 @@ As dependências do projeto estão listadas no arquivo requirements.txt. Certifi
 - PySide6
 - pyspellchecker
 
+<!-- 
 ## Capturas de Tela
 
 ### Editor de Texto com Abas
@@ -90,6 +97,7 @@ As dependências do projeto estão listadas no arquivo requirements.txt. Certifi
 
 ### Correção Ortográfica
 ![Correção Ortográfica](ainda_vou_colocar)
+-->
 
 ## Contribuições
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests. Para mais detalhes sobre como contribuir, consulte o arquivo [CONTRIBUTING.md](./CONTRIBUTING.md).

@@ -145,7 +145,7 @@ class NotePad(QMainWindow):
         search_action.triggered.connect(self.search_and_replace)
         tools_menu.addAction(search_action)
 
-    # métodos de manipulação de abas
+    # métodos de manipulação de abas(Arquivo)
     def new_tab(self):
         text_edit = QTextEdit()
         text_edit.setFont(self.default_font)
@@ -162,6 +162,10 @@ class NotePad(QMainWindow):
             try:
                 with open(file_path, "r", encoding="utf-8") as file:
                     content = file.read()
+                    
+                if self.tab_widget.count() == 0:
+                    self.new_tab()
+                
                 current_tab = self.get_current_tab()
                 current_tab.setPlainText(content)
                 self.file_paths[current_tab] = file_path
@@ -174,14 +178,27 @@ class NotePad(QMainWindow):
         if current_index != -1:
             current_tab = self.tab_widget.widget(current_index)
             file_path = self.file_paths.get(current_tab)
+            
+            if not file_path:
+                self.tab_widget.removeTab(current_index)
+                del self.file_paths[current_tab]
+                return
 
-            if file_path:
-                reply = QMessageBox.question(self, "Fechar Aba", "Deseja salvar as alterações antes de fechar?", QMessageBox.Yes | QMessageBox.No | QMessageBox.Cancel)
+            msg_box = QMessageBox(self)  
+            msg_box.setWindowTitle("Fechar Aba")
+            msg_box.setText("Deseja salvar as alterações antes de fechar?")
+            msg_box.setIcon(QMessageBox.Question)
 
-                if reply == QMessageBox.Yes:
-                    self.save_file()
-                elif reply == QMessageBox.Cancel:
-                    return
+            btn_yes = msg_box.addButton("Sim", QMessageBox.YesRole)
+            btn_no = msg_box.addButton("Não", QMessageBox.NoRole)
+            btn_cancel = msg_box.addButton("Cancelar", QMessageBox.RejectRole)
+
+            msg_box.exec_()
+
+            if msg_box.clickedButton() == btn_yes:
+                self.save_file()
+            elif msg_box.clickedButton() == btn_cancel:
+                return 
 
             self.tab_widget.removeTab(current_index)
             del self.file_paths[current_tab]
@@ -208,7 +225,17 @@ class NotePad(QMainWindow):
             self.tab_widget.setTabText(self.tab_widget.currentIndex(), os.path.basename(file_path))
             self.save_file()
 
-    # métodos de formatação e ferramentas
+
+    # métodos de edição(Editar)
+    def undo(self):
+        current_tab = self.get_current_tab()
+        current_tab.undo()
+
+    def redo(self):
+        current_tab = self.get_current_tab()
+        current_tab.redo()
+    
+    # métodos de formatação(Formatação)
     def toggle_auto_save(self):
         self.auto_save_enabled = not self.auto_save_enabled
         if self.auto_save_enabled:
@@ -237,14 +264,6 @@ class NotePad(QMainWindow):
                         file.write(content)
                 except Exception as e:
                     QMessageBox.critical(self, "Erro", f"Erro ao salvar automaticamente: {e}")
-
-    def undo(self):
-        current_tab = self.get_current_tab()
-        current_tab.undo()
-
-    def redo(self):
-        current_tab = self.get_current_tab()
-        current_tab.redo()
 
     def toggle_bold(self):
         current_tab = self.get_current_tab()
@@ -281,7 +300,7 @@ class NotePad(QMainWindow):
         formatador = Formatador(current_tab)
         formatador.reset_formatting()
 
-    # Métodos de utilidade de texto
+    # Métodos de utilidade de texto(Ferramentas)
     def check_spelling(self):
         current_tab = self.get_current_tab()
         ferramentas = FerramentasTexto(current_tab)

@@ -1,62 +1,58 @@
 import pytest
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QFileDialog
 from App.paginaInicial import NotePad
 
 @pytest.fixture
-def app(qtbot):
+def notepad_app(qtbot):
     app = NotePad()
     qtbot.addWidget(app)
     return app
 
-def test_abrir_arquivo(app, qtbot, tmp_path):
-    # Cria um arquivo temporário
-    file_path = tmp_path / "teste_abrir.txt"
-    file_path.write_text("Conteúdo de teste", encoding="utf-8")
+def test_open_file(notepad_app, qtbot, tmp_path, monkeypatch):
+    file_path = tmp_path / "test_open.txt"
+    file_content = "Conteúdo de teste"
+    file_path.write_text(file_content, encoding="utf-8")
 
-    # Mock do QFileDialog para retornar o caminho do arquivo
-    def mock_get_open_file_name(*args, **kwargs):
-        return str(file_path), ""
+    monkeypatch.setattr(QFileDialog, "getOpenFileName", lambda *args, **kwargs: (str(file_path), ""))
 
-    app.open_file = lambda: mock_get_open_file_name()
-    app.open_file()
+    notepad_app.open_file()
 
-    current_tab = app.get_current_tab()
-    current_tab.setPlainText(file_path.read_text(encoding="utf-8"))
-    assert current_tab.toPlainText() == "Conteúdo de teste"
+    current_tab = notepad_app.get_current_tab()
+    assert current_tab.toPlainText() == file_content
 
-def test_salvar_arquivo(app, qtbot, tmp_path):
-    current_tab = app.get_current_tab()
-    current_tab.setPlainText("Conteúdo salvo")
+def test_save_file(notepad_app, qtbot, tmp_path):
+    file_content = "Conteúdo salvo"
+    file_path = tmp_path / "test_save.txt"
 
-    file_path = tmp_path / "teste_salvar.txt"
-    app.file_paths[current_tab] = str(file_path)
-    app.save_file()
+    current_tab = notepad_app.get_current_tab()
+    current_tab.setPlainText(file_content)
 
-    assert file_path.read_text(encoding="utf-8") == "Conteúdo salvo"
+    notepad_app.file_paths[current_tab] = str(file_path)
 
-def test_salvar_como(app, qtbot, tmp_path):
-    current_tab = app.get_current_tab()
-    current_tab.setPlainText("Conteúdo salvo como")
+    notepad_app.save_file()
 
-    file_path = tmp_path / "teste_salvar_como.txt"
+    assert file_path.read_text(encoding="utf-8") == file_content
 
-    # Mock do QFileDialog para retornar o caminho do arquivo
-    def mock_get_save_file_name(*args, **kwargs):
-        return str(file_path), ""
+def test_save_as_file(notepad_app, qtbot, tmp_path, monkeypatch):
+    file_content = "Conteúdo salvo como"
+    file_path = tmp_path / "test_save_as.txt"
 
-    app.save_as = lambda: mock_get_save_file_name()
-    app.save_as()
+    current_tab = notepad_app.get_current_tab()
+    current_tab.setPlainText(file_content)
 
-    file_path.write_text(current_tab.toPlainText(), encoding="utf-8")
-    assert file_path.read_text(encoding="utf-8") == "Conteúdo salvo como"
+    monkeypatch.setattr(QFileDialog, "getSaveFileName", lambda *args, **kwargs: (str(file_path), ""))
 
-def test_nova_aba(app, qtbot):
-    initial_count = app.tab_widget.count()
-    app.new_tab()
-    assert app.tab_widget.count() == initial_count + 1
+    notepad_app.save_as()
 
-def test_fechar_aba(app, qtbot):
-    app.new_tab()
-    initial_count = app.tab_widget.count()
-    app.tab_widget.removeTab(0)
-    assert app.tab_widget.count() == initial_count - 1
+    assert file_path.read_text(encoding="utf-8") == file_content
+
+def test_new_tab(notepad_app, qtbot):
+    initial_tab_count = notepad_app.tab_widget.count()
+    notepad_app.new_tab()
+    assert notepad_app.tab_widget.count() == initial_tab_count + 1
+
+def test_close_tab(notepad_app, qtbot):
+    notepad_app.new_tab()
+    initial_tab_count = notepad_app.tab_widget.count()
+    notepad_app.tab_widget.removeTab(0)
+    assert notepad_app.tab_widget.count() == initial_tab_count - 1

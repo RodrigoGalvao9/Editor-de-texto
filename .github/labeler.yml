@@ -1,20 +1,21 @@
 # Add 'root' label to any root file changes
 root:
-- changed-files:
-  - '*'
+  - changed-files:
+    - '/*'
+    - '/.*'
 
 # Add 'AnyChange' label to any changes within the entire repository
 AnyChange:
-- changed-files:
-  - '**'
+  - changed-files:
+    - '**'
 
 # Add 'Documentation' label to any changes in markdown files or documentation folders
 documentation:
-- changed-files:
-  - '**/*.md'
-  - 'docs/**'
-  - 'docs/*'
-  - 'guides/*'
+  - changed-files:
+    - '**/*.md'
+    - 'docs/**'
+    - 'docs/*'
+    - 'guides/*'
 
 # Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
 source:
@@ -24,72 +25,70 @@ source:
 
 # Add 'feature' label to any PR where the head branch name starts with `feature` or has a `feature` section in the name
 feature:
-- head-branch: ['^feature', 'feature']
+  - head-branch: ['^feature', 'feature']
 
-# Add 'release' label to any PR that is opened against the `main` branch
 release:
-- base-branch: 'main'
+  - base-branch: ['main']
 
-# Add 'bug' label to any changes related to bug fixes
 bug:
-- head-branch: ['^bug', 'bug']
-- changed-files:
-  - '**/bug/**'
+  - head-branch: ['^bug', 'bug']
+  - changed-files:
+      - '**/bug/**'
 
 # Add 'duplicate' label to any PRs with duplicate content
 duplicate:
-- head-branch: ['^duplicate', 'duplicate']
+  - head-branch: ['^duplicate', 'duplicate']
 
 # Add 'enhancement' label to any changes related to feature enhancements
 enhancement:
-- head-branch: ['^enhancement', 'enhancement']
-- changed-files:
-  - '**/enhancement/**'
+  - head-branch: ['^enhancement', 'enhancement']
+  - changed-files:
+    - '**/enhancement/**'
 
 # Add 'good first issue' label to any PRs marked as beginner-friendly
 good first issue:
-- head-branch: ['^good-first-issue', 'good-first-issue']
+  - head-branch: ['^good-first-issue', 'good-first-issue']
 
 # Add 'help wanted' label to any PRs requesting assistance
 help wanted:
-- head-branch: ['^help-wanted', 'help-wanted']
+  - head-branch: ['^help-wanted', 'help-wanted']
 
 # Add 'invalid' label to any PRs with invalid content
 invalid:
-- head-branch: ['^invalid', 'invalid']
+  - head-branch: ['^invalid', 'invalid']
 
 # Add 'question' label to any PRs with questions
 question:
-- head-branch: ['^question', 'question']
+  - head-branch: ['^question', 'question']
 
 # Add 'wontfix' label to any PRs that won't be fixed
 wontfix:
-- head-branch: ['^wontfix', 'wontfix']
+  - head-branch: ['^wontfix', 'wontfix']
 
 # Add 'security' label to any changes related to security fixes
 security:
-- head-branch: ['^security', 'security']
-- changed-files:
-  - '**/security/**'
+  - head-branch: ['^security', 'security']
+  - changed-files:
+    - '**/security/**'
 
 # Add 'performance' label to any changes improving performance
 performance:
-- head-branch: ['^performance', 'performance']
-- changed-files:
-  - '**/performance/**'
+  - head-branch: ['^performance', 'performance']
+  - changed-files:
+    - '**/performance/**'
 
 # Add 'refactor' label to any changes related to code refactoring
 refactor:
-- head-branch: ['^refactor', 'refactor']
-- changed-files:
-  - '**/refactor/**'
+  - head-branch: ['^refactor', 'refactor']
+  - changed-files:
+    - '**/refactor/**'
 
 # Add 'tests' label to any changes in test files
 tests:
-- changed-files:
-  - 'tests/**'
+  - changed-files:
+    - 'tests/**'
 
 # Add 'ci/cd' label to any changes in GitHub Actions workflows
 ci/cd:
-- changed-files:
-  - '.github/workflows/**'
+  - changed-files:
+    - '.github/workflows/**'
