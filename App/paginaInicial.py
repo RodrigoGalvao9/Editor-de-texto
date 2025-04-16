@@ -132,6 +132,20 @@ class NotePad(QMainWindow):
         reset_format_action.triggered.connect(self.reset_formatting)
         format_menu.addAction(reset_format_action)
 
+        font_menu = format_menu.addMenu("Fonte")
+
+        times_new_roman_action = QAction("Times New Roman", self)
+        times_new_roman_action.triggered.connect(lambda: self.change_font("Times New Roman"))
+        font_menu.addAction(times_new_roman_action)
+
+        arial_action = QAction("Arial", self)
+        arial_action.triggered.connect(lambda: self.change_font("Arial"))
+        font_menu.addAction(arial_action)
+
+        courier_action = QAction("Courier New", self)
+        courier_action.triggered.connect(lambda: self.change_font("Courier New"))
+        font_menu.addAction(courier_action)
+
         # Menu Ferramentas
         tools_menu = menu_bar.addMenu("Ferramentas")
 
@@ -299,6 +313,11 @@ class NotePad(QMainWindow):
         current_tab = self.get_current_tab()
         formatador = Formatador(current_tab)
         formatador.reset_formatting()
+
+    def change_font(self, font_family):
+        current_tab = self.get_current_tab()
+        formatador = Formatador(current_tab)
+        formatador.change_font_family(font_family)
 
     # Métodos de utilidade de texto(Ferramentas)
     def check_spelling(self):

@@ -92,3 +92,17 @@ def test_reset_formatting(formatter, text_edit):
     assert char_format.fontWeight() == 400
     assert char_format.fontItalic() is False
     assert char_format.fontPointSize() == 12
+
+def test_font_change(formatter, text_edit):
+    text_edit.setText("Texto de teste")
+    select_word(text_edit)  
+
+    font_families = ["Arial", "Times New Roman", "Courier New"]
+
+    for family in font_families:
+        formatter.change_font_family(family)
+        cursor = text_edit.textCursor()
+        current_family = cursor.charFormat().fontFamily()
+        assert current_family == family, f"Esperado: {family}, mas foi: {current_family}"
+
+    

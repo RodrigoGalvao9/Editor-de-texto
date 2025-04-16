@@ -70,6 +70,16 @@ class Formatador:
             format.setForeground(color)
             cursor.setCharFormat(format)
 
+    def change_font_family(self, font_family: str) -> None:
+        cursor = self.text_edit.textCursor()
+        char_format = cursor.charFormat()
+        char_format.setFontFamily(font_family)
+
+        if cursor.hasSelection():
+            cursor.mergeCharFormat(char_format)
+        else:
+            self.text_edit.setCurrentCharFormat(char_format)
+
     def reset_formatting(self):
         """Reseta a formatação do texto no QTextEdit para o estado original."""
         cursor = self.text_edit.textCursor()

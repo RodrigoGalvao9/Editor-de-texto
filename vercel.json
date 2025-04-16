@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/docs/Fluxograma.html"
+      "destination": "/docs/index.html"
     }
   ]
 }
