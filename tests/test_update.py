@@ -14,11 +14,20 @@ def mock_version_file(tmp_path, monkeypatch):
 
 @patch("App.update_utils.requests.get")
 def test_check_for_updates_new_version(mock_get, mock_version_file):
+    system = platform.system()
+    if system == "Windows":
+        expected_asset = "BlocoDeNotas.exe"
+    else:
+        expected_asset = "BlocoDeNotas"  
+
     mock_response = MagicMock()
     mock_response.json.return_value = {
         "tag_name": "v2.0.0",
         "assets": [
-            {"name": "BlocoDeNotas.exe", "browser_download_url": "http://fake-url/BlocoDeNotas.exe"}
+            {
+                "name": expected_asset,
+                "browser_download_url": f"http://fake-url/{expected_asset}"
+            }
         ],
         "html_url": "http://fake-release-page"
     }
@@ -27,7 +36,9 @@ def test_check_for_updates_new_version(mock_get, mock_version_file):
 
     with patch("App.update_utils.download_and_replace") as mock_download:
         update_utils.check_for_updates(auto_download=True)
-        mock_download.assert_called_once_with("http://fake-url/BlocoDeNotas.exe", "BlocoDeNotas.exe")
+        mock_download.assert_called_once_with(
+            f"http://fake-url/{expected_asset}", expected_asset
+        )
 
 @patch("App.update_utils.requests.get")
 def test_check_for_updates_no_new_version(mock_get, mock_version_file, capsys):
@@ -74,7 +85,7 @@ def test_download_and_replace_cross_platform(mock_get, tmp_path, monkeypatch):
     else:
         with patch("App.update_utils.subprocess.Popen") as mock_popen:
             monkeypatch.setattr(update_utils.platform, "system", lambda: system)
-            update_utils.download_and_replace("http://fake-url/BlocoDeNotas.exe", asset_name)
+            update_utils.download_and_replace("http://fake-url/BlocoDeNotas", asset_name)
             assert mock_popen.call_count >= 2
             chmod_call = mock_popen.call_args_list[0][0][0]
             exec_call = mock_popen.call_args_list[1][0][0]
