@@ -102,7 +102,7 @@ def test_font_change(formatter, text_edit):
     for family in font_families:
         formatter.change_font_family(family)
         cursor = text_edit.textCursor()
-        current_family = cursor.charFormat().fontFamily()
-        assert current_family == family, f"Esperado: {family}, mas foi: {current_family}"
+        current_family = cursor.charFormat().fontFamilies()
+        assert current_family[0] == family, f"Esperado: {family}, mas foi: {current_family}"
 
     

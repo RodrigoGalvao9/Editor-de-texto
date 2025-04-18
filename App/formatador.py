@@ -73,7 +73,7 @@ class Formatador:
     def change_font_family(self, font_family: str) -> None:
         cursor = self.text_edit.textCursor()
         char_format = cursor.charFormat()
-        char_format.setFontFamily(font_family)
+        char_format.setFontFamilies([font_family])
 
         if cursor.hasSelection():
             cursor.mergeCharFormat(char_format)

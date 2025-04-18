@@ -1,6 +1,9 @@
 altgraph==0.17.4
+certifi==2025.1.31
+charset-normalizer==3.4.1
 colorama==0.4.6
 coverage==7.8.0
+idna==3.10
 iniconfig==2.1.0
 Jinja2==3.1.6
 MarkupSafe==3.0.2
@@ -30,6 +33,8 @@ pytest-qt==4.4.0
 pytest-timeout==2.3.1
 pytweening==1.2.0
 pywin32-ctypes==0.2.3
+requests==2.32.3
 setuptools==78.1.0
 shiboken6==6.9.0
+urllib3==2.4.0
 wheel==0.45.1

@@ -1,6 +1,6 @@
 # Bloco de Notas com Formatação e Correção Ortográfica
 
-Este é um editor de texto avançado desenvolvido em Python utilizando a biblioteca `PySide6`. Ele oferece funcionalidades como criação de múltiplas abas, formatação de texto, correção ortográfica automatizada e manipulação eficiente de arquivos, proporcionando uma experiência de edição completa e intuitiva.
+Este é um editor de texto avançado desenvolvido em Python com a biblioteca `PySide6`. Ele combina uma interface intuitiva com funcionalidades robustas, como suporte a múltiplas abas, ferramentas de formatação de texto, correção ortográfica automatizada e manipulação eficiente de arquivos. Ideal para quem busca uma experiência de edição prática e personalizada.
 
 ## Funcionalidades
 
@@ -28,6 +28,14 @@ Este é um editor de texto avançado desenvolvido em Python utilizando a bibliot
   - Botão para ativar ou desativar o salvamento automático.
   - Barra de status indicando se o salvamento automático está ativado ou desativado.
   - Barra de status exibindo mensagens como "Salvando..." ou "Alterações salvas" para informar o status do salvamento.
+- **Alterador de Tema**:
+  - Permite trocar o tema do aplicativo.
+  - Disponibiliza 5 temas diferentes para personalização.
+  - A opção de troca de tema está localizada na aba de ferramentas do menu.
+
+- **Auto Atualizador**:
+  - Verifica automaticamente se há uma versão mais recente do projeto.
+  - Permite atualizar o projeto para a versão mais recente com um clique.
 
 - **Atalhos de Teclado**:
   - `Ctrl+N`: Nova aba

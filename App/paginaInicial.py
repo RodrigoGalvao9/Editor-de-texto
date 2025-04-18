@@ -1,8 +1,10 @@
-from PySide6.QtWidgets import ( QMainWindow, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton, QLabel, QTabWidget, QFileDialog, QMessageBox, QMenuBar)
+from PySide6.QtWidgets import ( QMainWindow, QVBoxLayout, QHBoxLayout, QTextEdit, QPushButton, QLabel, QTabWidget, QFileDialog, QMessageBox, QMenuBar, QApplication)
 from PySide6.QtGui import QFont, QKeySequence, QAction  
 from PySide6.QtCore import QTimer
 from App.formatador import Formatador
 from App.texto_utils import FerramentasTexto
+from App.switch_theme import apply_theme
+from App.update_utils import check_for_updates
 import os
 
 class NotePad(QMainWindow):
@@ -15,8 +17,11 @@ class NotePad(QMainWindow):
         self.file_paths = {}  
         self.default_font = QFont("Arial", 12) 
         self.auto_save_enabled = True
+        
+        self.default_theme = "dark"  
 
         self.init_ui()
+        self.apply_default_theme()
         self.init_auto_save()
 
     def init_ui(self):
@@ -158,6 +163,29 @@ class NotePad(QMainWindow):
         search_action.setShortcut(QKeySequence("Ctrl+F"))
         search_action.triggered.connect(self.search_and_replace)
         tools_menu.addAction(search_action)
+        
+        check_update_action = QAction("Verificar Atualizações", self)
+        check_update_action.triggered.connect(self.check_for_updates)
+        tools_menu.addAction(check_update_action)
+
+        # Menu Temas
+        theme_menu = menu_bar.addMenu("Temas")
+
+        themes = {
+            "Claro": "light",
+            "Escuro": "dark",
+            "Solarizado": "solarized",
+            "Midnight": "midnight",
+            "Dracula": "dracula"
+        }
+
+        for label, theme_key in themes.items():
+            action = QAction(label, self)
+            action.triggered.connect(lambda checked, theme=theme_key: apply_theme(theme))
+            theme_menu.addAction(action)
+            
+    def apply_default_theme(self):
+        apply_theme(self.default_theme)
 
     # métodos de manipulação de abas(Arquivo)
     def new_tab(self):
@@ -329,3 +357,9 @@ class NotePad(QMainWindow):
         current_tab = self.get_current_tab()
         ferramentas = FerramentasTexto(current_tab)
         ferramentas.search_and_replace()
+
+    def check_for_updates(self):
+        try:
+            check_for_updates()
+        except Exception as e:
+            QMessageBox.critical(self, "Erro", f"Erro ao verificar atualizações: {e}")

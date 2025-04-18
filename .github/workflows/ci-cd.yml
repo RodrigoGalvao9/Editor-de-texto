@@ -2,11 +2,8 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    tags:
+      - 'v*'
 
 env:
   QT_QPA_PLATFORM: offscreen
@@ -33,6 +30,10 @@ jobs:
     - name: Run tests
       run: |
         pytest tests -v --showlocals --disable-warnings --tb=short
+
+    - name: Save version tag to file
+      run: echo "${GITHUB_REF#refs/tags/}" > App/version.txt
+      
 
     - name: Build executable
       run: |
@@ -73,6 +74,9 @@ jobs:
       run: |
         pytest tests -v --showlocals --disable-warnings --tb=short
 
+    - name: Save version tag to file
+      run: echo "${GITHUB_REF#refs/tags/}" > App/version.txt
+      
     - name: Build executable
       run: |
         pip install pyinstaller
@@ -112,11 +116,11 @@ jobs:
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: v${{ github.run_number }}
-        name: Release v${{ github.run_number }}
+        tag_name: ${{ github.ref_name }}
+        name: Release ${{ github.ref_name }}
         files: |
           artifacts/BlocoDeNotas.exe
           artifacts/BlocoDeNotas
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+        
