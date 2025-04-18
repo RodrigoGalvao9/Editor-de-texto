@@ -40,3 +40,13 @@
 - Fluxo:
   - Destacar erros ortográficos
 
+### Auto Atualizador
+- Verifica existência de novas versões
+- Atualiza versão atual pela ultima
+- Fluxo 
+  - Atualizar versão do projeto atual
+
+### Trocar tema
+- Troca o tema do app
+- Fluxo
+  - Troca o tema do app
