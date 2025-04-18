@@ -81,13 +81,15 @@ def test_download_and_replace_cross_platform(mock_get, tmp_path, monkeypatch):
         with patch("App.update_utils.os.startfile") as mock_startfile:
             monkeypatch.setattr(update_utils.platform, "system", lambda: "Windows")
             update_utils.download_and_replace("http://fake-url/BlocoDeNotas.exe", asset_name)
-            mock_startfile.assert_called_once()
+            mock_startfile.assert_called_once()  # Verifica se startfile foi chamado
     else:
         asset_name = "BlocoDeNotas"
         with patch("App.update_utils.subprocess.Popen") as mock_popen:
             monkeypatch.setattr(update_utils.platform, "system", lambda: system)
             update_utils.download_and_replace("http://fake-url/BlocoDeNotas", asset_name)
+
             assert mock_popen.call_count >= 2
+
             chmod_call = mock_popen.call_args_list[0][0][0]
             exec_call = mock_popen.call_args_list[1][0][0]
             assert "chmod" in chmod_call or exec_call[0].startswith("./")
