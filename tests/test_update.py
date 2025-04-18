@@ -64,7 +64,6 @@ def test_check_for_updates_error_handling(mock_get, capsys):
 
 @patch("App.update_utils.requests.get")
 def test_download_and_replace_cross_platform(mock_get, tmp_path, monkeypatch):
-    asset_name = "BlocoDeNotas.exe"
     fake_content = b"conteudo-fake"
 
     mock_response = MagicMock()
@@ -78,11 +77,13 @@ def test_download_and_replace_cross_platform(mock_get, tmp_path, monkeypatch):
     system = platform.system()
 
     if system == "Windows":
+        asset_name = "BlocoDeNotas.exe"
         with patch("App.update_utils.os.startfile") as mock_startfile:
             monkeypatch.setattr(update_utils.platform, "system", lambda: "Windows")
             update_utils.download_and_replace("http://fake-url/BlocoDeNotas.exe", asset_name)
             mock_startfile.assert_called_once()
     else:
+        asset_name = "BlocoDeNotas"
         with patch("App.update_utils.subprocess.Popen") as mock_popen:
             monkeypatch.setattr(update_utils.platform, "system", lambda: system)
             update_utils.download_and_replace("http://fake-url/BlocoDeNotas", asset_name)
