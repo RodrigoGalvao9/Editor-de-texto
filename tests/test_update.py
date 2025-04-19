@@ -64,32 +64,48 @@ def test_check_for_updates_error_handling(mock_get, capsys):
 
 @patch("App.update_utils.requests.get")
 def test_download_and_replace_cross_platform(mock_get, tmp_path, monkeypatch):
+    # Simula o conteúdo do arquivo baixado
     fake_content = b"conteudo-fake"
-
     mock_response = MagicMock()
     mock_response.iter_content = lambda chunk_size: [fake_content]
     mock_response.__enter__.return_value = mock_response
     mock_response.raise_for_status = lambda: None
     mock_get.return_value = mock_response
 
+    # Caminhos temporários para simular o download
+    final_file = tmp_path / "final_asset"
+
+    # Mock para evitar que o teste finalize o processo
     monkeypatch.setattr(sys, "exit", lambda code=0: None)
 
-    system = platform.system()
+    # Define o sistema operacional e o nome do asset
+    system = platform.system().lower()
+    asset_name = "BlocoDeNotas.exe" if system == "windows" else "BlocoDeNotas"
 
-    if system == "Windows":
-        asset_name = "BlocoDeNotas.exe"
-        with patch("App.update_utils.os.startfile") as mock_startfile:
-            monkeypatch.setattr(update_utils.platform, "system", lambda: "Windows")
-            update_utils.download_and_replace("http://fake-url/BlocoDeNotas.exe", asset_name)
-            mock_startfile.assert_called_once()  # Verifica se startfile foi chamado
-    else:
-        asset_name = "BlocoDeNotas"
+    # Mock para diferentes sistemas operacionais
+    if system == "windows":
         with patch("App.update_utils.subprocess.Popen") as mock_popen:
-            monkeypatch.setattr(update_utils.platform, "system", lambda: system)
-            update_utils.download_and_replace("http://fake-url/BlocoDeNotas", asset_name)
+            monkeypatch.setattr(update_utils.platform, "system", lambda: "Windows")
 
-            assert mock_popen.call_count >= 2
+            # Chama a função sob teste
+            update_utils.download_and_replace("http://fake-url/" + asset_name, str(final_file))
 
-            chmod_call = mock_popen.call_args_list[0][0][0]
-            exec_call = mock_popen.call_args_list[1][0][0]
-            assert "chmod" in chmod_call or exec_call[0].startswith("./")
+            # Verifica se o arquivo foi baixado corretamente
+            assert final_file.exists()
+            assert final_file.read_bytes() == fake_content
+
+            # Verifica se o executável foi iniciado
+            mock_popen.assert_called_once_with([str(final_file)], shell=True)
+    else:
+        with patch("App.update_utils.subprocess.Popen") as mock_popen:
+            monkeypatch.setattr(update_utils.platform, "system", lambda: "Linux")
+
+            # Chama a função sob teste
+            update_utils.download_and_replace("http://fake-url/" + asset_name, str(final_file))
+
+            # Verifica se o arquivo foi baixado corretamente
+            assert final_file.exists()
+            assert final_file.read_bytes() == fake_content
+
+            # Verifica se o executável foi iniciado com permissões corretas
+            mock_popen.assert_any_call([str(final_file)])

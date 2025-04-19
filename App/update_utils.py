@@ -6,6 +6,7 @@ import webbrowser
 from packaging import version
 from pathlib import Path
 import platform
+import subprocess
 
 def get_local_version():
     version_file = Path(__file__).parent / "version.txt"
@@ -69,10 +70,13 @@ def download_and_replace(url, asset_name):
     print(f"Atualização baixada para: {local_path}")
     print("Iniciando nova versão...")
 
-    if platform.system().lower() == "windows":
-        os.startfile(local_path)
-    else:
-        os.chmod(local_path, 0o755)
-        os.execv(local_path, [local_path])
-
-    sys.exit(0)
+    try:
+        if platform.system().lower() == "windows":
+            subprocess.Popen([local_path], shell=True)
+        else:
+            os.chmod(local_path, 0o755)
+            subprocess.Popen([local_path])
+    except Exception as e:
+        print(f"Erro ao iniciar a nova versão: {e}")
+    finally:
+        sys.exit(0)
