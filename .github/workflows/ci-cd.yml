@@ -119,8 +119,8 @@ jobs:
         tag_name: ${{ github.ref_name }}
         name: Release ${{ github.ref_name }}
         files: |
-          artifacts/BlocoDeNotas.exe
-          artifacts/BlocoDeNotas
+          artifacts/BlocoDeNotas-executable-windows
+          artifacts/BlocoDeNotas-executable-linux
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
